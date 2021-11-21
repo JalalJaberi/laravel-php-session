@@ -66,4 +66,16 @@ final class NativeSessionGuard implements Guard
 
         return $this->user != null;
     }
+
+    public function logout()
+    {
+        retry(3, function () {
+            session_start();
+        });
+
+        try {
+            session_destroy();
+        } finally {
+        }
+    }
 }
