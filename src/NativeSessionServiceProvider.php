@@ -22,11 +22,13 @@ final class NativeSessionServiceProvider extends ServiceProvider
         $this->app->singleton(SessionRetriever::class, function () {
             $config = $this->app->make(Repository::class);
             
+            $handler = $config->get('auth.guards.php.handler');
+
             $path = $config->get('auth.guards.php.storage');
 
             $domain = $config->get('auth.guards.php.domain');
 
-            return new SessionRetriever($path, $domain);
+            return new SessionRetriever($path, $domain, $handler);
         });
     }
 }

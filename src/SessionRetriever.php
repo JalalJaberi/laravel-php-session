@@ -8,19 +8,22 @@ final class SessionRetriever
 
     private $domain;
 
+    private $handler;
+
     private $secure = true;
 
     private $session = null;
 
-    public function __construct(string $path, string $domain)
+    public function __construct(string $path, string $domain, string $handler)
     {
         $this->path = $path;
         $this->domain = $domain;
+        $this->handler = $handler;
     }
 
     public static function fake(array $session): self
     {
-        $instance = new self('', '');
+        $instance = new self('', '', '');
 
         $instance->session = $session;
 
@@ -41,7 +44,7 @@ final class SessionRetriever
         }
 
         ini_set('session.gc_maxlifetime', '28800');
-        ini_set('session.save_handler', 'redis');
+        ini_set('session.save_handler', $this->handler);
         ini_set('session.save_path', $this->path);
         ini_set('session.cookie_domain', $this->domain);
         ini_set('session.cookie_secure', (string) $this->secure);

@@ -52,4 +52,18 @@ final class NativeSessionGuard implements Guard
     {
         return (bool) $this->provider->retrieveByCredentials($_SESSION);
     }
+
+    /**
+     * Attempt to authenticate a user using the given credentials.
+     *
+     * @param  array  $credentials
+     * @param  bool  $remember
+     * @return bool
+     */
+    public function attempt(array $credentials = [], $remember = false)
+    {
+        $this->user = $this->provider->retrieveByCredentials($credentials);
+
+        return $this->user != null;
+    }
 }
